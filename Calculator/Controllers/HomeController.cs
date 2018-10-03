@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Calculator.Models;
 using System.Web.Mvc;
 
 namespace Calculator.Controllers
@@ -10,21 +7,40 @@ namespace Calculator.Controllers
     {
         public ActionResult Index()
         {
-            return View();
+            return View(new CalculatorVM());
         }
 
-        public ActionResult About()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(CalculatorVM model)
         {
-            ViewBag.Message = "Your application description page.";
+            double res = 0D;
+            if (ModelState.IsValid)
+            {
+                switch (model.CommandText.ToLower())
+                {
+                    case "add":
+                        res = model.FirstNumber + model.SecondNumber;
+                        break;
 
-            return View();
-        }
+                    case "sub":
+                        res = model.FirstNumber - model.SecondNumber;
+                        break;
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+                    case "mul":
+                        res = model.FirstNumber * model.SecondNumber;
+                        break;
 
-            return View();
+                    case "div":
+                        res = model.FirstNumber / model.SecondNumber;
+                        break;
+                    default:
+                        break;
+                }
+                ViewBag.Result = res;
+                return View(model);
+            }
+            return View(model);
         }
     }
 }

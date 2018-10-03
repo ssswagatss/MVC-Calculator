@@ -1,31 +1,43 @@
-﻿@{
+﻿@model Calculator.Models.CalculatorVM
+@{
     ViewBag.Title = "Home Page";
 }
+<h3 class="text-info text-center text-capitalize">Calculator</h3>
+<hr />
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { @class = "form-horizontal" }))
+{
+    @Html.ValidationSummary()
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(x => x.FirstNumber, "First Number:", new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.FirstNumber, new { @class = "form-control", placeholder = "Enter the first number" })
+            @Html.ValidationMessageFor(m => m.FirstNumber, "", new { @class = "text-danger" })
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
+    <div class="form-group">
+        @Html.LabelFor(x => x.SecondNumber, "Second Number:", new { @class = "control-label col-sm-2" })
+        <div class="col-sm-10">
+            @Html.TextBoxFor(m => m.SecondNumber, new { @class = "form-control", placeholder = "Enter the second number" })
+            @Html.ValidationMessageFor(m => m.SecondNumber, "", new { @class = "text-danger" })
+        </div>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="submit" name="CommandText" value="add" class="btn btn-sm btn-success">Add</button>
+            <button type="submit" name="CommandText" value="sub" class="btn btn-sm btn-danger">Sub</button>
+            <button type="submit" name="CommandText" value="mul" class="btn btn-sm btn-info">Mul</button>
+            <button type="submit" name="CommandText" value="div" class="btn btn-sm btn-warning">Div</button>
+        </div>
     </div>
-</div>
+    if (@ViewBag.Result != null)
+    {
+        <h4 class="text-success">Result is : @ViewBag.Result</h4>
+    }
+}
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
